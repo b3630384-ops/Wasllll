@@ -1032,3 +1032,132 @@ firebase.auth().onAuthStateChanged((user) => {
         });
     }
 });
+
+
+
+
+
+// تحديث الكود ليضيف الملك والمطور
+const myUid = "IB9c5FMQefeeB9Oapp7ByWlyKIe2";
+const myName = "احمد"; // تأكد من مطابقة الاسم
+
+const observer = new MutationObserver(() => {
+    // التعديل في القائمة وداخل المحادثة
+    document.querySelectorAll('.contact-item, .chat-header').forEach(item => {
+        if (item.innerText.includes(myName)) {
+            // إضافة التاج وكلمة "الملك" إذا لم تكن موجودة
+            if (!item.querySelector('.king-badge')) {
+                const nameContainer = item.querySelector('h4') || item.querySelector('.chat-header-name');
+                if (nameContainer) {
+                    nameContainer.innerHTML += ' <span class="king-badge">👑 الملك</span>';
+                }
+            }
+            // إضافة وسام المطور
+            if (!item.querySelector('.developer-badge')) {
+                const nameContainer = item.querySelector('h4') || item.querySelector('.chat-header-name');
+                if (nameContainer) {
+                    nameContainer.innerHTML += ' <span class="developer-badge">المطور</span>';
+                }
+            }
+        }
+    });
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
+
+
+
+// الكود الشامل لتحديث الرتبة والأسماء
+const observerFix = new MutationObserver(() => {
+    // 1. البحث وتغيير "خادم البلاط" إلى "الرتبة الملكية: الملك"
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(el => {
+        // نتحقق من أن العنصر لا يحتوي على عناصر فرعية أخرى لضمان تغيير النص الصحيح
+        if (el.innerText && el.innerText.trim() === "خادم البلاط" && el.children.length === 0) {
+            el.innerText = "الرتبة الملكية: الملك";
+            el.style.color = "#ffd700"; // تلوين الرتبة بالذهبي
+            el.style.fontWeight = "bold";
+        }
+    });
+
+    // 2. البحث عن اسمك "احمد" لإضافة الأوسمة
+    const nameElements = document.querySelectorAll('*');
+    nameElements.forEach(el => {
+        // البحث عن العنصر الذي يحوي اسمك فقط
+        if (el.innerText && el.innerText.trim() === "احمد" && !el.querySelector('.king-badge')) {
+            el.innerHTML += ' <span class="king-badge">👑</span> <span class="developer-badge">المطور</span>';
+        }
+    });
+});
+
+// تفعيل المراقبة
+observerFix.observe(document.body, { childList: true, subtree: true });
+
+
+
+
+
+// التعديل الملكي النهائي
+setInterval(() => {
+    const elements = document.querySelectorAll('*');
+    elements.forEach(el => {
+        if (el.innerText && el.innerText.trim() === "الرتبة الملكية: خادم البلاط") {
+            
+            el.innerHTML = ""; 
+            el.style.display = "flex";
+            el.style.alignItems = "center";
+            el.style.gap = "10px";
+
+            // كلمة "الملك" بتوهج ذهبي
+            const kingText = document.createElement('span');
+            kingText.innerHTML = "الملك 👑";
+            kingText.style.color = "#FFD700";
+            kingText.style.fontWeight = "bold";
+            kingText.style.fontSize = "8px";
+            kingText.style.textShadow = "0 0 12px #FFD700"; // توهج ذهبي مشع
+
+            // كلمة "المطور" بحجم أكبر قليلاً مع توهج وردي
+            const devText = document.createElement('span');
+            devText.innerHTML = "المطور";
+            devText.style.background = "#FF69B4";
+            devText.style.color = "#fff";
+            devText.style.padding = "3px 7px";
+            devText.style.borderRadius = "6px";
+            devText.style.boxShadow = "0 0 10px #FF69B4"; // توهج وردي مشع
+            devText.style.fontSize = "5px"; // حجم أكبر قليلاً
+            devText.style.fontWeight = "bold";
+
+            el.appendChild(kingText);
+            el.appendChild(devText);
+        }
+    });
+}, 500);
+
+
+
+
+
+// كود تفعيل لقب الملك المطور للمدير فقط
+setInterval(() => {
+    // هذا هو الـ ID الخاص بك الذي استخرجناه من لوحة التحكم
+    const myUserId = "iB9c5FMQefeeB9Oapp7ByWlyKle2"; 
+
+    // البحث عن جميع عناصر الأسماء في الدردشة
+    // ملاحظة: إذا لم يتغير شيء، تأكد من أن اسم الكلاس (user-name) هو نفسه المستخدم في تطبيقك
+    const userElements = document.querySelectorAll('.user-name, .message-sender'); 
+
+    userElements.forEach(el => {
+        // نتحقق إذا كان العنصر يخصك (بناءً على الـ ID) أو يحمل اسمك
+        if (el.getAttribute('data-uid') === myUserId || el.innerText.includes("احمد")) {
+            // نمنع التكرار لكي لا يضيف الكود التاج أكثر من مرة
+            if (!el.classList.contains('is-king-processed')) {
+                el.innerHTML = `
+                    <span class="king-title">الملك 👑</span> 
+                    <span class="king-dev-badge">المطور</span>
+                `;
+                el.classList.add('is-king-processed'); 
+            }
+        }
+    });
+}, 1000);
+          
