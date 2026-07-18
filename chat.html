@@ -2,13 +2,34 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- تعديل Viewport لضمان أبعاد مثالية للموبايل ومنع الزوم العشوائي في سوق بلاي -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>سجل الدردشات الاحترافي</title>
     <link rel="stylesheet" href="chat-style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* حل مشكلة قص الشاشة في متصفحات الهاتف */
+        html, body {
+            height: 100%;
+            height: -webkit-fill-available;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* يمنع تحرك الصفحة بأكملها للأعلى والأسفل */
+        }
+
+        .app-container {
+            height: 100vh;
+            height: 100dvh; /* الارتفاع الديناميكي الذي يتجاهل شريط المتصفح */
+            width: 100vw;
+            overflow: hidden;
+            /* حماية العناصر من النوتش */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            box-sizing: border-box;
+        }
+
         /* تنسيقات شريط المراسيم الملكية في أعلى القائمة */
         .royal-stories-container {
             display: flex;
@@ -60,6 +81,22 @@
             overflow: hidden;
             text-overflow: ellipsis;
             color: #e2e8f0;
+        }
+
+        /* إخفاء الشريط الأخضر وزر الزائد تلقائياً داخل المحادثة */
+        .chat-area:not(.hidden) ~ #floatingBar,
+        #chatArea:not([style*="display: none"]) ~ #floatingBar {
+            display: none !important;
+        }
+
+        .chat-area:not(.hidden) ~ .sidebar .fab-btn,
+        #chatArea:not([style*="display: none"]) ~ .sidebar .fab-btn {
+            display: none !important;
+        }
+
+        body:has(#backBtn:not(.hidden)) #floatingBar,
+        body:has(#backBtn:not(.hidden)) .fab-btn {
+            display: none !important;
         }
     </style>
 </head>
@@ -179,7 +216,6 @@
         </div>
     </div>
 
-
     <!-- النافذة 2: الإعدادات -->
     <div class="modal hidden" id="settingsModal" onclick="closeModalOnOutsideClick(event, 'settingsModal')">
         <div class="modal-content">
@@ -191,10 +227,9 @@
                     <p style="font-size: 13px; color: #64748b; margin-bottom: 8px;">الأشخاص المحظورون:</p>
                     <div id="blockedListArea"></div>
                 </div>
-              <button onclick="window.location.href='ranks.html'" style="margin-top: 10px;">نظام الرتب الملكية</button>
-              <button onclick="window.location.href='privacy.html'" style="margin-top: 10px;">الخصوصية وأمان البيانات</button>
-              <button onclick="window.location.href='about.html'">حول التطبيق</button>
-
+                <button onclick="window.location.href='ranks.html'" style="margin-top: 10px;">نظام الرتب الملكية</button>
+                <button onclick="window.location.href='privacy.html'" style="margin-top: 10px;">الخصوصية وأمان البيانات</button>
+                <button onclick="window.location.href='about.html'">حول التطبيق</button>
                 <button onclick="window.location.href='index.html'">➕ إضافة حساب جديد آخر</button>
                 <button class="danger-action" onclick="window.location.href='index.html'">🚪 تسجيل الخروج</button>
                 <button class="danger-action" onclick="deleteAccountPermanently()">⚠️ حذف الحساب نهائياً</button>
@@ -318,6 +353,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
     <script src="chat.js"></script>
+
 </body>
-                        </html>
-    
+                                                                              </html>
+                                                                              
