@@ -252,3 +252,16 @@ button, .fab-btn, .send-btn {
         padding-bottom: max(10px, env(safe-area-inset-bottom));
     }
 }
+
+
+/* هذا الكود يحل مشكلة عدم التمرير داخل النوافذ */
+.modal {
+    overflow-y: auto !important; /* السماح بالتمرير العمودي */
+    -webkit-overflow-scrolling: touch; /* سلاسة التمرير في الهواتف */
+}
+
+.modal-content {
+    max-height: 90vh; /* تحديد أقصى ارتفاع للنافذة */
+    overflow-y: auto; /* السماح بالتمرير داخل المحتوى */
+}
+
